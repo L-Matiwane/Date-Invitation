@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Go out with me?</title>
+  
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+      font-family: 'Poppins', Arial, sans-serif;
+      overflow: hidden;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 100%;
+      position: relative;
+    }
+
+    .gif-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #d63384;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      min-height: 80px;
+    }
+
+    button {
+      padding: 12px 28px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    #yesBtn {
+      background-color: #28a745;
+      color: white;
+      z-index: 10;
+    }
+
+    #yesBtn:hover {
+      background-color: #218838;
+    }
+
+    #noBtn {
+      background-color: #dc3545;
+      color: white;
+      position: relative;
+    }
+
+    /* Date details hidden by default */
+    .success-message {
+      display: none;
+    }
+
+    .success-message h2 {
+      color: #d63384;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .success-message p {
+      color: #333;
+      font-size: 1.1rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <!-- Initial Question View -->
+    <div id="questionContainer">
+      <div class="gif-container">
+        <img id="displayGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHd6bm8ycWd5aTV4d2xyeXh6dzh2czg1cDY2azhhazFxcWthbmlnZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cLS1dkpRZ2Q5MIOJKo/giphy.gif" alt="Cute gif" />
+      </div>
+      <h1 id="questionText">Will you go out on a date with me? 🥺</h1>
+      
+      <div class="buttons-container">
+        <button id="yesBtn">Yes!</button>
+        <button id="noBtn">No</button>
+      </div>
+    </div>
+
+    <!-- Success View -->
+    <div id="successContainer" class="success-message">
+      <div class="gif-container">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZtNndxOXc0b2twbzE0bDN4OHJwbzhxd2FwazNkdndwMnBva3MyeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9IbxxvDUQM/giphy.gif" alt="Happy Cat" />
+      </div>
+      <h2>YAY! 🎉</h2>
+      <p>I knew you'd say yes! ❤️</p>
+      <p><strong>Date Details:</strong></p>
+      <p>📍 Coffee & Drinks @ The Spot</p>
+      <p>📅 This Saturday @ 7:00 PM</p>
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const questionContainer = document.getElementById('questionContainer');
+    const successContainer = document.getElementById('successContainer');
+    const questionText = document.getElementById('questionText');
+
+    let yesScale = 1;
+
+    // Messages that cycle as they try to click "No"
+    const noMessages = [
+      "Are you sure?",
+      "Think again! 😉",
+      "Pretty please? 🥺",
+      "You can't catch me!",
+      "Nice try!",
+      "Wrong button! 😜"
+    ];
+
+    // Function to move the No button to a random position
+    function dodgeNoButton() {
+      // Switch button to absolute positioning after first attempt
+      noBtn.style.position = 'fixed';
+
+      // Get screen boundaries leaving a 50px padding from edges
+      const maxX = window.innerWidth - noBtn.offsetWidth - 50;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 50;
+
+      const randomX = Math.max(50, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(50, Math.floor(Math.random() * maxY));
+
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+
+      // Grow the Yes Button
+      yesScale += 0.2;
+      yesBtn.style.transform = `scale(${yesScale})`;
+
+      // Change question text for fun
+      const randomMsgIndex = Math.floor(Math.random() * noMessages.length);
+      questionText.textContent = noMessages[randomMsgIndex];
+    }
+
+    // Event listeners for No Button (Desktop hover & Mobile touch)
+    noBtn.addEventListener('mouseover', dodgeNoButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevents touch devices from triggering a click
+      dodgeNoButton();
+    });
+
+    // Event listener for Yes Button
+    yesBtn.addEventListener('click', () => {
+      // Hide question view, show success view
+      questionContainer.style.display = 'none';
+      successContainer.style.display = 'block';
+
+      // Fire confetti burst!
+      confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+
+      // Secondary confetti wave for extra flair
+      setTimeout(() => {
+        confetti({
+          particleCount: 80,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 80,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+      }, 300);
+    });
+  </script>
+</body>
+</html>
