@@ -6,9 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>To Mama Bear🧸</title>
 <meta property="og:title" content="Don't open this- it's a scam">
+<meta property="og:description" content="Open at your own risk 👀">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Don't open this- it's a scam">
+<meta name="twitter:description" content="Open at your own risk 👀">
+<meta name="twitter:image" content="og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet">
@@ -174,15 +180,16 @@
   #yesBtn:active{ transform: translateY(0); }
 
   #noBtn{
-    background: transparent;
-    color: rgba(244,233,219,0.55);
+    background: rgba(207,154,76,0.08);
+    color: var(--gold-bright);
     padding: 13px 26px;
     font-size: 0.95rem;
-    border: 1px solid rgba(244,233,219,0.28);
+    border: 2px solid var(--gold-bright);
+    box-shadow: 0 0 0 3px rgba(207,154,76,0.15), 0 8px 20px -8px rgba(207,154,76,0.5);
     position:fixed;
     z-index:5;
   }
-  #noBtn:hover{ color: rgba(244,233,219,0.75); }
+  #noBtn:hover{ color: var(--cream); background: rgba(207,154,76,0.16); }
 
   .hint{
     margin-top:22px;
@@ -313,7 +320,7 @@
       </p>
 
       <div class="details">
-        <div>Jules on Jarvis<span>WHERE</span></div>
+        <div>La Cuisinette<span>WHERE</span></div>
         <div>Sunday, 20th · 2:00 PM<span>WHEN</span></div>
       </div>
 
@@ -328,7 +335,7 @@
       <p class="kicker">Sunday, then</p>
       <h1 id="successHeadline">It's a date.</h1>
       <p class="body-text" id="successBody">
-        Jules on Jarvis, 2:00 PM, Sunday the 20th. I'll be the one who can't stop smiling.
+        La Cuisinette, 2:00 PM, Sunday the 20th. I'll be the one who can't stop smiling.
       </p>
 
       <span class="teaser" id="teaser" onclick="openEncore()">one more thing <span class="arrow">→</span></span>
